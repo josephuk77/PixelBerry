@@ -5,16 +5,16 @@
 #include <unistd.h>
 #include <wiringPi.h>
 
-#define KEYPAD_PB1 3  // KEYPAD 포트 BT1 핀 정의 , 1
-#define KEYPAD_PB2 17 // KEYPAD 포트 BT2 핀 정의 , 2
-#define KEYPAD_PB3 27 // KEYPAD 포트 BT3 핀 정의 , 3
-#define KEYPAD_PB4 18 // KEYPAD 포트 BT4 핀 정의 , 4
-#define KEYPAD_PB5 27 // KEYPAD 포트 BT5 핀 정의 , 5
+#define KEYPAD_PB1 3  // KEYPAD 포트 BT1 핀 정의 , up
+#define KEYPAD_PB2 17 // KEYPAD 포트 BT2 핀 정의 , down
+#define KEYPAD_PB3 27 // KEYPAD 포트 BT3 핀 정의 , left
+#define KEYPAD_PB4 18 // KEYPAD 포트 BT4 핀 정의 , right
+#define KEYPAD_PB5 27 // KEYPAD 포트 BT5 핀 정의 , ok
+#define KEYPAD_PB6 22 // KEYPAD 포트 BT6 핀 정의 , back
 
 #define MAX_KEY_BT_NUM 5 // KEYPAD 버튼 개수 정의
 
-const int KeypadTable[5] = {KEYPAD_PB1, KEYPAD_PB2, KEYPAD_PB3, KEYPAD_PB4, KEYPAD_PB5}; // KEYPAD 핀 테이블 선언
-const char number[5] = {"up", "down", "left", "right", "ok"};                            // Number 테이블 선언
+const int KeypadTable[6] = {KEYPAD_PB1, KEYPAD_PB2, KEYPAD_PB3, KEYPAD_PB4, KEYPAD_PB5, KEYPAD_PB6}; // KEYPAD 핀 테이블 선언
 
 int KeypadRead(void) // KEYPAD 버튼 눌림을 확인하여 nKeypadstate 상태 변수에 값을 저장
 {
@@ -65,6 +65,7 @@ int main()
     int cursor = 1;
     int select = 0;
     int sound = 1;
+    int music = 1;
     char inkey;
     int nKeypadstate;
     while (1)
@@ -81,21 +82,37 @@ int main()
         {
             if (nKeypadstate & (1 << i)) // 조건문 if, 현재 i의 값을 1 Left Shift하여 nKeypadstate 값과 AND연산했을때(버튼의 위치 탐색)
             {
-                inkey = i; // 입력키에 i 저장
+                inkey = i;            // 입력키에 i 저장
+                if (sound == 1)       // 입력키에 i 저장
+                    Change_FREQ(500); // 버튼 누를때마다 '낮은 도' 출력
+                delay(100);           // 10ms 동안 지속
+                STOP_FREQ();          // 소리 출력 정지
             }
         }
 
         // 화면을 지우고
         system("clear");
+        printf("\n");
+        printf("\n");
 
         // 텍스트를 중앙에 출력합니다.
-        printCentered("______  _              _ ______                          ", terminal_width);
-        printCentered("| ___ \\(_)            | || ___ \\                         ", terminal_width);
-        printCentered("| |_/ / _ __  __  ___ | || |_/ /  ___  _ __  _ __  _   _ ", terminal_width);
-        printCentered("|  __/ | |\\ \\/ / / _ \\| || ___ \\ / _ \\| '__|| '__|| | | |", terminal_width);
-        printCentered("| |    | | >  < |  __/| || |_/ /|  __/| |   | |   | |_| |", terminal_width);
-        printCentered("\\_|    |_|/_/\\_\\ \\___||_|\\____/  \\___||_|   |_|    \\__, |", terminal_width);
-        printCentered("                                                   __/ |", terminal_width);
+        printCentered("□□□■■□□□□□■□□□□■■□□□□■□□□□□□■□□□□□■□□□□□□□□□□□□□□■□□■□□□□□□□■□□□□□□□□□□□■□■□□■■■■■■□□□■", terminal_width);
+        printCentered("□■■■■■■□□□■□□□□■■□□□□■□□□■■■■■■■□□■□□□□□■■■■■■□□□■□□■□□□□□□□■□□□□■■■■■□□■□■□□■■□□■■□□□■", terminal_width);
+        printCentered("□■■□□■■□□□■□□□□■■□□□□■□□□□□■■■□□□□■□□□□□■□□□□■□□□■□□■□□□□□□□■□□□□□□□□■□□■□■□□■□□□□■□□□■", terminal_width);
+        printCentered("□■□□□□■□□□■□□□□■■■□□□■■■□□■■■■■□□□■■■□□□■□□□□■□□□■□□■□□□□□□□■□□□□□□□■■□□■□■□□■□□□□■□□□■", terminal_width);
+        printCentered("□■□□□□■□□□■□□□■■■■■□□■□□□■■□□□■■□□■■■□□□■□□□□■□□□■□□■□□□□□□□■□□□□□□□■■■■■□■□□■■□□■■□□□■", terminal_width);
+        printCentered("□■□□□□■□□□■□■■■□□■■■□■□□□■■□□□■■□□■□□□□□■□□□□■□□□■□□■□□□□□□□■□□□□□□□■■■■■□■□□■■■■■■□□□■", terminal_width);
+        printCentered("□■■□□□■□□□■□■■□□□□□□□■□□□□■■■■■□□□■□□□□□■□□□□■□□□■□□■□□□□□□□■□□□□□□■■□□□■□■□□□□□□□□□□□■", terminal_width);
+        printCentered("□■■□□■■□□□■□□□□■■■■■■■□□□□□■■■□□□□■□□□□□■□□□□■□□□■□□■□□□■■■□■□□□□□■■■□□□■□■□□□□■■■■■■■■", terminal_width);
+        printCentered("□□■■■■■□□□■□□□□■■□□□■■□□□□□■□□□□□□■□□□□□■■■■■■□□□■□□■■■■■■■□■□□□□■■□□□□□■□■□□□□■□□□□□□■", terminal_width);
+        printCentered("□□□□□□□□□□■□□□□■□□□□□■■□□□□■□□□□□□□□□□□□□□□□□□□□□■□□□□□□□□□□■□□□□■□□□□□□■□■□□□□■□□□□□□■", terminal_width);
+        printCentered("□□□□□□□□□□■□□□□■■□□□■■□□□□□■□□□□□□□□□□□□□□□□□□□□□■□□□□□□□□□□■□□□□□□□□□□□■□■□□□□■□□□□□□■", terminal_width);
+        printCentered("□□□□□□□□□□■□□□□■■■■■■■□□□□□■■■■■■■■□□□□□□□□□□□□□□■□□□□□□□□□□■□□□□□□□□□□□■□■□□□□■■■■■■■■", terminal_width);
+
+        
+        printf("\n");
+        printf("\n");
+        printf("\n");
 
         if (select == 0)
         {
@@ -127,43 +144,220 @@ int main()
                 printCentered("3. 소리 설정", terminal_width);
                 printCentered("4. 게임 종료 O", terminal_width);
             }
-        }
+            if (inkey != -1 && inkey == 0)
+            {
+                cursor++;
+                if (cursor > 4)
+                {
+                    cursor = 1;
+                }
+            }
+            else if (inkey != -1 && inkey == 1)
+            {
+                cursor--;
+                if (cursor < 1)
+                {
+                    cursor = 4;
+                }
+            }
 
-        if (inkey != -1 && inkey == 4)
+            if (inkey != -1 && inkey == 4)
+            {
+                select = cursor;
+                cursor = 1;
+            }
+        }
+        if (select == 1)
         {
-            select = cursor;
-            cursor = 1;
-            if (cursor == 1 && select == 1)
+            if (cursor == 1)
             {
                 printCentered("1. 테트리스 O", terminal_width);
                 printCentered("2. 미로 찾기", terminal_width);
             }
-            else if ()
+            else if (cursor == 2)
             {
+                printCentered("1. 테트리스", terminal_width);
+                printCentered("2. 미로 찾기 O", terminal_width);
             }
-        }
-
-        
-
-        if (inkey != -1 && inkey == 0)
-        {
-            cursor++;
-            if (cursor > 4)
+            if (inkey != -1 && inkey == 4 && cursor == 1)
             {
+                // 테트리스 게임실행
+
+                select = 0;
                 cursor = 1;
             }
-        }
-        else if (inkey != -1 && inkey == 1)
-        {
-            cursor--;
-            if (cursor < 1)
+            else if (inkey != -1 && inkey == 4 && cursor == 2)
             {
-                cursor = 4;
+                // 미로 찾기 게임실행
+
+                select = 0;
+                cursor = 1;
             }
 
-            // 일정 시간 동안 대기합니다 (예: 1초).
-            delay(200);
+            if (inkey != -1 && inkey == 5)
+            {
+                select = 0;
+                cursor = 1;
+            }
+            if (inkey != -1 && inkey == 0)
+            {
+                cursor++;
+                if (cursor > 2)
+                {
+                    cursor = 1;
+                }
+            }
+            else if (inkey != -1 && inkey == 1)
+            {
+                cursor--;
+                if (cursor < 1)
+                {
+                    cursor = 2;
+                }
+            }
         }
+        if (select == 2)
+        {
+            if (cursor == 1)
+            {
+                printCentered("1. 테트리스 순위 O", terminal_width);
+                printCentered("2. 미로 찾기 순위", terminal_width);
+            }
+            else if (cursor == 2)
+            {
+                printCentered("1. 테트리스 순위", terminal_width);
+                printCentered("2. 미로 찾기 순위 O", terminal_width);
+            }
+
+            if (inkey != -1 && inkey == 4 && cursor == 1)
+            {
+                // 테트리스 게임 순위 출력
+
+                select = 0;
+                cursor = 1;
+            }
+            else if (inkey != -1 && inkey == 4 && cursor == 2)
+            {
+                // 미로 찾기 게임 순위 출력
+
+                select = 0;
+                cursor = 1;
+            }
+
+            if (inkey != -1 && inkey == 5)
+            {
+                select = 0;
+                cursor = 1;
+            }
+            if (inkey != -1 && inkey == 0)
+            {
+                cursor++;
+                if (cursor > 2)
+                {
+                    cursor = 1;
+                }
+            }
+            else if (inkey != -1 && inkey == 1)
+            {
+                cursor--;
+                if (cursor < 1)
+                {
+                    cursor = 2;
+                }
+            }
+        }
+        if (select == 3)
+        {
+            if (sound == 1 && music == 1 && cursor == 1)
+            {
+                printCentered("1. 소리 ON O", terminal_width);
+                printCentered("2. 음악 ON ", terminal_width);
+            }
+            else if (sound == 1 && music == 0 && cursor == 1)
+            {
+                printCentered("1. 소리 ON O", terminal_width);
+                printCentered("2. 음악 OFF ", terminal_width);
+            }
+            else if (sound == 0 && music == 1 && cursor == 1)
+            {
+                printCentered("1. 소리 OFF O", terminal_width);
+                printCentered("2. 음악 ON ", terminal_width);
+            }
+            else if (sound == 0 && music == 0 && cursor == 1)
+            {
+                printCentered("1. 소리 OFF O", terminal_width);
+                printCentered("2. 음악 OFF ", terminal_width);
+            }
+            else if (sound == 1 && music == 1 && cursor == 2)
+            {
+                printCentered("1. 소리 ON ", terminal_width);
+                printCentered("2. 음악 ON O", terminal_width);
+            }
+            else if (sound == 1 && music == 0 && cursor == 2)
+            {
+                printCentered("1. 소리 ON ", terminal_width);
+                printCentered("2. 음악 OFF O", terminal_width);
+            }
+            else if (sound == 0 && music == 1 && cursor == 2)
+            {
+                printCentered("1. 소리 OFF ", terminal_width);
+                printCentered("2. 음악 ON O", terminal_width);
+            }
+            else if (sound == 0 && music == 0 && cursor == 2)
+            {
+                printCentered("1. 소리 OFF ", terminal_width);
+                printCentered("2. 음악 OFF O", terminal_width);
+            }
+            
+            if (inkey != -1 && inkey == 4 && cursor == 1)
+            {
+                if (sound == 1)
+                {
+                    sound = 0;
+                }
+                else if (sound == 0)
+                {
+                    sound = 1;
+                }
+            }else if(inkey != -1 && inkey == 4 && cursor == 2){
+                if (music == 1)
+                {
+                    music = 0;
+                }
+                else if (music == 0)
+                {
+                    music = 1;
+                }
+            }
+            if (inkey != -1 && inkey == 5)
+            {
+                select = 0;
+                cursor = 1;
+            }
+            if (inkey != -1 && inkey == 0)
+            {
+                cursor++;
+                if (cursor > 2)
+                {
+                    cursor = 1;
+                }
+            }
+            else if (inkey != -1 && inkey == 1)
+            {
+                cursor--;
+                if (cursor < 1)
+                {
+                    cursor = 2;
+                }
+            }
+        }
+        if (select == 4)
+        {
+            break;
+        }
+
+        // 일정 시간 동안 대기합니다 (예: 1초).
+        delay(200);
     }
 
     return 0;
