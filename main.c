@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <softTone.h>
 #include <wiringPi.h>
-#include "game/Tetirs.h"
+#include "game/Tetris.h"
 
 #define KEYPAD_PB1 3  // KEYPAD 포트 BT1 핀 정의 , up
 #define KEYPAD_PB2 17 // KEYPAD 포트 BT2 핀 정의 , down
@@ -238,7 +238,7 @@ int main()
 
             if (inkey != -1 && inkey == 4 && cursor == 1)
             {
-                // 테트리스 게임 순위 출력
+                print_result_tetris(void);
 
                 select = 0;
                 cursor = 1;

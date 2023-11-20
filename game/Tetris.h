@@ -84,8 +84,6 @@ int check_one_line(void);
 int KeypadRead(void);
 int display_tetris_table(void);
 int init_tetris_table(void);
-int getch(void);
-int search_result(void);
-int print_result(void);
+int print_result_tetris(void);
 
 #endif /* TETRIS_H */
