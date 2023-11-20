@@ -12,7 +12,7 @@
 #define KEYPAD_PB5 27 // KEYPAD 포트 BT5 핀 정의 , ok
 #define KEYPAD_PB6 22 // KEYPAD 포트 BT6 핀 정의 , back
 
-#define MAX_KEY_BT_NUM 5 // KEYPAD 버튼 개수 정의
+#define MAX_KEY_BT_NUM 6 // KEYPAD 버튼 개수 정의
 
 const int KeypadTable[6] = {KEYPAD_PB1, KEYPAD_PB2, KEYPAD_PB3, KEYPAD_PB4, KEYPAD_PB5, KEYPAD_PB6}; // KEYPAD 핀 테이블 선언
 
@@ -68,6 +68,12 @@ int main()
     int music = 1;
     char inkey;
     int nKeypadstate;
+
+    for (i = 0; i < MAX_KEY_BT_NUM; i++) // KEYPAD 핀 입력 설정
+    {
+        pinMode(KeypadTable[i], INPUT); // KEYPAD 핀 테이블의 i번째 위치에 입력 설정 할당
+    }
+
     while (1)
     {
         // 터미널 크기를 얻습니다.
