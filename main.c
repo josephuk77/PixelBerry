@@ -3,7 +3,9 @@
 #include <string.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
+#include <softTone.h>
 #include <wiringPi.h>
+#include "game/Tetirs.h"
 
 #define KEYPAD_PB1 3  // KEYPAD 포트 BT1 핀 정의 , up
 #define KEYPAD_PB2 17 // KEYPAD 포트 BT2 핀 정의 , down
@@ -115,7 +117,6 @@ int main()
         printCentered("□□□□□□□□□□■□□□□■■□□□■■□□□□□■□□□□□□□□□□□□□□□□□□□□□■□□□□□□□□□□■□□□□□□□□□□□■□■□□□□■□□□□□□■", terminal_width);
         printCentered("□□□□□□□□□□■□□□□■■■■■■■□□□□□■■■■■■■■□□□□□□□□□□□□□□■□□□□□□□□□□■□□□□□□□□□□□■□■□□□□■■■■■■■■", terminal_width);
 
-        
         printf("\n");
         printf("\n");
         printf("\n");
@@ -187,7 +188,7 @@ int main()
             }
             if (inkey != -1 && inkey == 4 && cursor == 1)
             {
-                // 테트리스 게임실행
+                game_start(music);
 
                 select = 0;
                 cursor = 1;
@@ -314,7 +315,7 @@ int main()
                 printCentered("1. 소리 OFF ", terminal_width);
                 printCentered("2. 음악 OFF O", terminal_width);
             }
-            
+
             if (inkey != -1 && inkey == 4 && cursor == 1)
             {
                 if (sound == 1)
@@ -325,7 +326,9 @@ int main()
                 {
                     sound = 1;
                 }
-            }else if(inkey != -1 && inkey == 4 && cursor == 2){
+            }
+            else if (inkey != -1 && inkey == 4 && cursor == 2)
+            {
                 if (music == 1)
                 {
                     music = 0;
@@ -362,8 +365,8 @@ int main()
             break;
         }
 
-        // 일정 시간 동안 대기합니다 (예: 1초).
-        delay(200);
+        // 일정 시간 동안 대기합니다 (예: 0.25초).
+        delay(250);
     }
 
     return 0;
