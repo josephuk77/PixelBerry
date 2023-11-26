@@ -76,9 +76,7 @@ int main()
         ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
         int terminal_width = w.ws_col;
 
-        nKeypadstate = KeypadRead(); // KEYPAD로부터 버튼 입력을 읽어 상태를 변수에 저장
         inkey = -1;                  // 입력키에 -1 저장
-
         inkey = readKey();
 
         // 화면을 지우고
