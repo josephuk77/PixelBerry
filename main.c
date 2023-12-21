@@ -943,32 +943,7 @@ void GenerateMaze(char *maze, int width, int height)
     maze[(height - 1) * width + (width - 2)] = 0;
 }
 
-/* Solve the maze. */
-void SolveMaze(char *maze, int width, int height)
-{
-
-    int dir, count;
-    int x, y;
-    int dx, dy;
-    int forward;
-
-    /* Remove the entry and exit. */
-    maze[0 * width + 1] = 1;
-    maze[(height - 1) * width + (width - 2)] = 1;
-
-    forward = 1;
-    dir = 0;
-    count = 0;
-    x = 1;
-    y = 1;
-    while (x != width - 2 || y != height - 2)
-    {
-        dx = 0;
-        dy = 0;
-        switch (dir)
-        {
-        case 0:
-            dx = 1;
+   dx = 1;
             break;
         case 1:
             dy = 1;
@@ -1005,34 +980,7 @@ void SolveMaze(char *maze, int width, int height)
     maze[(height - 2) * width + (width - 2)] = 2;
     maze[(height - 1) * width + (width - 2)] = 2;
 }
-// 사용자의 현재 위치를 표시하는 함수
-void ShowMaze(const char* maze, int width, int height, int player_x, int player_y) {
-    struct winsize w;
-    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-    int terminal_width = w.ws_col;
 
-    char line[width * 2 + 1]; // 각 줄에 대한 버퍼
-
-    for (int y = 0; y <= height; y++) {
-        int lineIdx = 0; // 현재 줄의 인덱스
-        for (int x = 0; x <= width; x++) {
-            if (x == player_x && y == player_y) {
-                line[lineIdx++] = 'P';
-                line[lineIdx++] = ' ';
-            }
-            else if (maze[y * width + x] == 1 || y == height) {
-                line[lineIdx++] = '[';
-                line[lineIdx++] = ']';
-            }
-            else {
-                line[lineIdx++] = ' ';
-                line[lineIdx++] = ' ';
-            }
-        }
-        line[lineIdx] = '\0'; // 문자열 종료
-        printCentered(line, terminal_width);
-    }
-}
 
 
 // 사용자의 이동을 처리하는 함수
